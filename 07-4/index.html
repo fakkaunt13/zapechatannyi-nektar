@@ -1,0 +1,117 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Урок 7.4</title>
+<link rel="stylesheet" href="../lib/engine.css"></head><body>
+<script src="../lib/engine.js"></script><script src="../lib/art.js"></script><script src="../lib/reader.js"></script><script src="../lib/scene.js"></script><script src="narration.js"></script>
+<script>
+CHAPTER = { num:'07-4', badge:'7.4', lesson:true, title:'Куба и Медина', next:'../08-1/index.html' };
+const K1 = 'Остановка в Куба', K2 = 'Вступление в Медину', CX = PL.x + PL.w/2, NIGHT = '#f3e3b8';
+function harra(q, y){ const g = G(q); path(g, `M${PL.x} ${y}Q${CX} ${y - 40} ${PL.x + PL.w} ${y}V${PL.y + PL.h}H${PL.x}Z`, { fill:'#4c4640', stroke:'none' });
+  for(let i = 0; i < 40; i++) circ(g, PL.x + 20 + (i*97)%760, y + 30 + (i*53)%(PL.y + PL.h - y - 40), 4 + i%6, { fill:'#35302b', stroke:'none' }); return g; }
+BEATS = [
+lessonIntro({ ch:7, n:4, of:4, title:'Куба и Медина', chapter:'Глава 7 · Хиджра — переселение из Мекки в Медину', parts:['Ожидание на харре и встреча', 'Мечеть Куба — первая мечеть в исламе', 'Вступление в Медину и дом Абу Аййуба'], min:12 }),
+
+readBeat('b1', 'Ожидание на харре', K1, (p, D) => {
+  const pl = plate(p, { scene:'dawn', hz:570, ridges:2, ground:'harra', sun:false, seed:51 }); const q = pl.inner;
+  const dayL = G(q, { o:0 }); rect(dayL, PL.x, PL.y, PL.w, 640, { rx:0, fill:LG(SKY.day), stroke:'none' }); ridges(dayL, 'day', { hz:570, n:2, seed:51 });
+  plateDate(q, 'понедельник · 8 раби аль-авваль · 23 сентября 622 г.', w('В понедельник'));
+  const sn = sun(q, PL.x + 120, 470, 40, 'dawn'); q.insertBefore(sn, q.children[2]); q.insertBefore(dayL, sn);
+  tw(sn, { x:CX, y:200 }, w('стали каждое утро выходить'), 4, 'io'); tw(dayL, { o:1 }, w('стали каждое утро выходить'), 4, 'io'); const hl = T(q, 'харра — каменистое лавовое поле', { x:CX, y:690, size:22, italic:true, font:SERIF, fill:'#e8dcc4', o:0 }); show(hl, w('выходить на харру'));
+  const hot = T(q, 'до полуденной жары — и обратно, день за днём', { x:CX, y:290, size:23, italic:true, font:SERIF, fill:COL.terra, o:0 }); show(hot, w('пока полуденная жара'));
+  const tw1 = G(q, { x:PL.x + 660, y:600, o:0 }); house(tw1, 0, 0, 70, 190, { door:false, win:true, c:'#d6b07c' }); rect(tw1, -40, -206, 80, 14, { rx:2, fill:'#8a6440', stroke:'none' });
+  show(tw1, w('сторожевых башен')); const twl = T(q, 'сторожевая башня', { x:PL.x + 660, y:368, size:20, italic:true, fill:COL.brown, o:0 }); show(twl, w('сторожевых башен', .3));
+  const mir = G(q, { o:0 }); for(let i = 0; i < 5; i++) path(mir, `M${PL.x + 60} ${560 - i*8}q60 -6 120 0t120 0t120 0t120 0`, { stroke:'#fff7df', 'stroke-width':3, opacity:.6 - i*.1 }); show(mir, w('показавшихся из миража'));
+  const ml = T(q, 'из миража — белые одежды', { x:PL.x + 260, y:520, size:22, italic:true, font:SERIF, fill:COL.ink, o:0 }); show(ml, w('показавшихся из миража', .3));
+  const cr = plateCap(q, '«Вот едет тот, кого вы дожидались!»', w('Вот едет ваш дед'), { y:PL.y + PL.h - 50 });
+  tw(hot, { o:0 }, w('сторожевых башен'), .3);
+  pl.frame();
+}),
+
+readBeat('b2', 'Встреча', K1, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:560, veil:.4, seed:53 }); const q = pl.inner;
+  const tk = G(q, { x:CX, y:230, o:0 }); const ar = T(tk, 'اللّٰهُ أَكْبَرُ', { y:20, size:92, font:ARAB, fill:COL.emerald }); ar.setAttribute('direction', 'rtl'); T(tk, '«Аллах велик!»', { y:80, size:26, italic:true, font:SERIF, fill:COL.dim });
+  show(tk, w('Аллах велик')); for(let i = 0; i < 3; i++){ const r = circ(q, CX, 230, 120 + i*50, { fill:'none', stroke:COL.gold2, 'stroke-width':3, o:0 }); tw(r, { o:.7 }, w('Аллах велик', i*.3), .4); tw(r, { o:0 }, w('Аллах велик', 1 + i*.3), 1); }
+  const qc = quoteCard(q, CX, 470, 760, 'فَإِنَّ اللَّهَ هُوَ مَوْلَاهُ وَجِبْرِيلُ وَصَالِحُ الْمُؤْمِنِينَ', '«…Его Покровитель — Аллах, и Джибрил, и праведные верующие»', 'сура «Запрещение», 66:4', w('Его Покровитель'), { size:21 });
+  const sunG = G(q, { x:CX + 250, y:660, o:0 }); circ(sunG, 0, 0, 40, { fill:'#f6d36b', stroke:'none' }); for(let i = 0; i < 8; i++){ const a = i*Math.PI/4; line(sunG, Math.cos(a)*52, Math.sin(a)*52, Math.cos(a)*70, Math.sin(a)*70, { stroke:'#e2b84a', 'stroke-width':4 }); }
+  show(sunG, w('солнечные лучи стали падать'));
+  const cl = G(q, { x:CX - 60, y:700, o:0 }); path(cl, 'M-150 -20Q0 -80 150 -20L130 10Q0 -40 -130 10Z', { fill:'#f7f1e2', stroke:'#b9ac90', 'stroke-width':2 }); show(cl, w('стал прикрывать его от солнца'));
+  const cll = T(q, 'тень от плаща Абу Бакра (р.а.) — и люди поняли, кто посланник Аллаха ﷺ', { x:CX, y:770, size:19, italic:true, font:SERIF, fill:COL.ink, o:0 }); show(cll, w('люди поняли'));
+  const hb = plateCap(q, '«Бог от Фемана грядёт и Святый — от горы Фаран» (Аввакум)', w('Хабкука'), { y:PL.y + PL.h - 30, size:19 });
+  tw(cll, { o:0 }, w('Весь город вышел'), .3);
+  pl.frame();
+}),
+
+readBeat('b3', 'Четыре дня в Кубе', K1, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:400, ridges:2, ground:'flat', seed:57 }); const q = pl.inner;
+  grove(q, [[PL.x + 80, 520, .8], [PL.x + 150, 540, .65], [PL.x + 700, 530, .85], [PL.x + 640, 550, .6]]);
+  const ms = mosque(q, CX, 560, 1.4, { o:0 }); show(ms, w('основал мечеть'), 1);
+  const ml = T(q, 'мечеть Куба — первая мечеть в исламе', { x:CX, y:620, size:27, weight:700, font:SERIF, fill:COL.emerald, o:0 }); show(ml, w('ставшую первой мечетью'));
+  ['пн', 'вт', 'ср', 'чт'].forEach((d, i) => { const g = G(q, { x:CX - 180 + i*120, y:160, o:0 }); star8(g, 0, 0, 30, { fill:COL.emerald, stroke:COL.gold2, 'stroke-width':2 }); T(g, d, { y:8, size:22, weight:700, fill:'#fbf3dc' }); show(g, w('провел в Куба четыре дня', i*.4)); });
+  const al = chip(q, CX, 250, '‘Али (р.а.)', w('покинул Мекку пешком'), { size:24, c:COL.brown, sub:'вернул вверенное и пришёл пешком' });
+  tw(al, { o:0 }, w('провел в Куба четыре дня'), .3);
+  const fr = G(q, { x:CX + 300, y:160, o:0 }); star8(fr, 0, 0, 30, { fill:COL.gold, stroke:COL.gold2, 'stroke-width':2 }); T(fr, 'пт', { y:8, size:22, weight:700, fill:'#fff' }); show(fr, w('На пятый день'));
+  const jm = tablet(q, CX, 740, 680, 100, { o:0 }); show(jm, w('Время пятничной молитвы'));
+  T(jm, 'первая пятничная молитва', { y:-6, size:28, weight:700, font:SERIF }); T(jm, 'у домов бану салим ибн ‘ауф · сто человек', { y:28, size:20, fill:COL.dim });
+  pl.frame();
+}),
+
+readBeat('b4', 'Вступление в Медину', K2, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:580, ridges:2, ground:'flat', seed:21 }); const q = pl.inner;
+  grove(q, [[PL.x + 60, 660, .7], [PL.x + 380, 650, .6], [PL.x + 740, 665, .75]], { night:true });
+  cityscape(q, 720, { n:7, seed:21, night:true, lit:.6 }); cityscape(q, 800, { n:6, seed:22, night:true, lit:.5, scale:1.2 });
+  const mn = moon(q, PL.x + 230, 260, 66, 'full', { o:0 }); show(mn, w('Нас озарила полная луна'), 1.5);
+  const t1 = T(q, 'Йасриб → Мадина', { x:PL.x + 560, y:220, size:36, weight:700, font:SERIF, fill:NIGHT, o:0 }); show(t1, w('стали называть Городом'));
+  const t2 = T(q, 'مَدِينَةُ النَّبِيِّ', { x:PL.x + 560, y:300, size:58, font:ARAB, fill:COL.gold2, o:0 }); t2.setAttribute('direction', 'rtl'); show(t2, w('стали называть Городом', .4));
+  const t3 = T(q, '«Город Пророка ﷺ»', { x:PL.x + 560, y:345, size:22, italic:true, font:SERIF, fill:'#d8c9a6', o:0 }); show(t3, w('стали называть Городом', .8));
+  const sg = plateCap(q, 'дома и улицы — в славословиях Аллаху', w('сотрясались от громких'), { y:PL.y + PL.h - 50, dark:true });
+  pl.frame();
+}),
+
+readBeat('b5', 'Дом Абу Аййуба', K2, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:130, ridges:1, ground:'flat', clouds:0, seed:59 }); const q = pl.inner;
+  const HS = [[150, 260], [330, 220], [560, 250], [700, 330], [140, 470], [360, 430], [650, 520], [220, 680], [720, 760]];
+  grove(q, [[PL.x + 460, 330, .55], [PL.x + 250, 560, .6], [PL.x + 340, 800, .6], [PL.x + 60, 640, .5]]);
+  houses(q, HS.map(([x, y], i) => [PL.x + x, y, 120, 80, { c:shade('#dcb98a', (i%3 - 1)*.08) }]));
+  const trk = path(q, `M${PL.x + 20} 360C${PL.x + 160} 380 ${PL.x + 250} 330 ${PL.x + 300} 350S${PL.x + 420} 520 ${PL.x + 500} 480S${PL.x + 520} 600 ${PL.x + 520} 590`, { stroke:COL.gold, 'stroke-width':5, 'stroke-dasharray':'3 12' }, { d:0 }); draw(trk, w('Дайте ей пройти'), 6, 'lin');
+  const dl = T(q, '«Дайте ей пройти — она получает веления свыше»', { x:CX, y:130, size:22, italic:true, font:SERIF, fill:COL.ink, o:0 }); show(dl, w('Дайте ей пройти'));
+  const mk = G(q, { x:PL.x + 520, y:590, o:0 }); circ(mk, 0, 0, 42, { fill:COL.gold2, stroke:'none', opacity:.4, filter:'url(#glow)' }); star8(mk, 0, 0, 22, { fill:COL.emerald, stroke:COL.gold2, 'stroke-width':2 }); show(mk, w('опустилась на колени на том же самом месте'));
+  const ml = T(q, 'здесь — Мечеть Пророка ﷺ', { x:PL.x + 520, y:640, size:22, weight:700, font:SERIF, fill:COL.emerald, o:0 }); show(ml, w('где ныне находится мечеть'));
+  const nj = T(q, 'квартал бану ан-наджжар', { x:PL.x + 520, y:668, size:19, italic:true, fill:COL.dim, o:0 }); show(nj, w('из рода бану ан-наджжар'));
+  const ay = chip(q, PL.x + 600, 420, 'дом Абу Аййуба аль-Ансари (р.а.)', w('Абу Аййуб аль-Ансари'), { size:20, c:COL.lapis });
+  const qt = plateCap(q, '«Человек должен быть там, где находится его седло»', w('Человек должен быть там'), { y:PL.y + PL.h - 40, size:21 });
+  const q2 = plateCap(q, '«Это мой дом и моя дверь»', w('это мой дом и моя дверь'), { y:PL.y + PL.h - 40, size:22 }); tw(qt, { o:0 }, w('это мой дом и моя дверь', -.3), .3);
+  pl.frame();
+}),
+
+readBeat('b6', 'Семьи переселенцев', K2, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:560, veil:.45, seed:61 }); const q = pl.inner;
+  const t = T(q, 'Через несколько дней в Медину прибыли', { x:CX, y:140, size:28, weight:700, font:SERIF, o:0 }); show(t, .2); show(rule(q, CX, 170, 360, { o:0 }), .4);
+  const N = [['Сауда (р.а.)', 'жена Сауда'], ['Фатима (р.а.)', 'Фатима'], ['Умм Кульсум (р.а.)', 'Умм Кульсум'], ['Усама ибн Зайд (р.а.)', 'Усама бин Зайд'], ['Умм Айман (р.а.)', 'Умм Айман'], ['Абдуллах ибн Абу Бакр', 'Абдуллах бин Абу Бакр'], ['‘Аиша (р.а.)', 'среди которых была Аиша']];
+  N.forEach(([n, ph], i) => chip(q, CX + (i%2 ? 170 : -170), 250 + Math.floor(i/2)*90, n, w(ph), { size:23, c:COL.emerald }));
+  const zn = tablet(q, CX, 700, 620, 90, { o:0 }); show(zn, w('Зайнаб осталась'));
+  T(zn, 'Зайнаб (р.а.) — позже, после битвы при Бадре', { y:9, size:23, weight:700, font:SERIF, fill:COL.brown });
+  pl.frame();
+}),
+
+readBeat('b7', 'Лихорадка Медины', K2, (p, D) => {
+  const pl = plate(p, { scene:'dusk', hz:400, ridges:2, ground:'flat', seed:63 }); const q = pl.inner;
+  const pg = grove(q, [[CX - 260, 470, .9], [CX - 150, 450, 1.1], [CX + 150, 460, 1], [CX + 260, 480, .85]]);
+  const ms = mosque(q, CX, 480, 1, {}); 
+  const fe = T(q, 'лихорадка: болеют Абу Бакр и Билял (р.а.)', { x:CX, y:160, size:25, italic:true, font:SERIF, fill:COL.terra, o:0 }); show(fe, w('стали болеть лихорадкой'));
+  const ml = T(q, 'тоска по Мекке — в стихах', { x:CX, y:200, size:21, italic:true, fill:COL.dim, o:0 }); show(ml, w('Каждому человеку'));
+  const du = quoteCard(q, CX, 650, 700, null, '«О Аллах, сделай так, чтобы мы полюбили Медину\nтак же, как любим Мекку, или даже больше!»', 'мольба Пророка ﷺ', w('О Аллах сделай так'), { size:24 });
+  const end = plateCap(q, 'конец мекканского периода', w('Так завершился'), { y:PL.y + 60 });
+  tw(fe, { o:0 }, w('Так завершился', -.3), .3); tw(ml, { o:0 }, w('Так завершился', -.3), .3);
+  pl.frame();
+}),
+
+lessonWrap(['8 раби аль-авваль — прибытие в Кубу', 'Мечеть Куба — первая мечеть в исламе', 'Первая пятничная молитва; Йасриб стал Мединой', 'Верблюдица остановилась у бану ан-наджжар — дом Абу Аййуба (р.а.)']),
+lessonQuiz([
+  { id:'p-harra', prompt:'Как мусульмане Медины ждали Пророка ﷺ?', build: choice(['Каждое утро выходили на харру и ждали до полуденной жары', 'Отправили навстречу караван', 'Ждали у Каабы'], 0, 'Верно, и однажды со сторожевой башни увидели путников, показавшихся из миража.', ['', 'Нет.', 'Кааба — в Мекке.']) },
+  { id:'p-shade', prompt:'Как встречавшие поняли, кто из путников — посланник Аллаха ﷺ?', build: choice(['Он первым заговорил', 'Когда на него упали солнечные лучи, Абу Бакр (р.а.) стал прикрывать его от солнца', 'По его одежде'], 1, 'Да — до этого многие приветствовали Абу Бакра.', ['Нет, он сидел молча.', '', 'Нет.']) },
+  { id:'p-quba', prompt:'Сколько дней Пророк ﷺ провёл в Кубе?', build: choice(['Один', 'Четыре: понедельник — четверг', 'Две недели'], 1, 'Верно, и там была основана первая мечеть в исламе.', ['Больше.', '', 'Меньше.']) },
+  { id:'p-jumua', prompt:'Где прошла первая пятничная молитва?', build: choice(['В мечети Куба', 'В вади у домов бану салим ибн ‘ауф — около ста человек', 'В доме Абу Аййуба'], 1, 'Верно — по пути из Кубы в Медину.', ['Нет.', '', 'Нет.']) },
+  { id:'p-camel', prompt:'Почему Пророк ﷺ остановился у Абу Аййуба (р.а.)?', build: choice(['Так решили по жребию', 'Верблюдица «получала веления свыше» и опустилась на колени в квартале бану ан-наджжар', 'Абу Аййуб был самым богатым'], 1, 'Да: «Дайте ей пройти». А на этом месте позже возвели Мечеть Пророка ﷺ.', ['Нет.', '', 'Нет.']) }
+]),
+finishBeat()
+];
+boot();
+</script></body></html>

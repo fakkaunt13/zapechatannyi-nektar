@@ -1,0 +1,171 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Урок 7.3</title>
+<link rel="stylesheet" href="../lib/engine.css"></head><body>
+<script src="../lib/engine.js"></script><script src="../lib/art.js"></script><script src="../lib/reader.js"></script><script src="../lib/scene.js"></script><script src="narration.js"></script>
+<script>
+CHAPTER = { num:'07-3', badge:'7.3', lesson:true, title:'Дорога в Медину', next:'../07-4/index.html' };
+const K = 'На пути в Медину', CX = PL.x + PL.w/2, NIGHT = '#f3e3b8';
+function horse(p, x, y, s=1, o){ o = Object.assign({ c:'#7a4e2c', o:1 }, o||{}); const g = G(p, { x, y, s, o:o.o }); const c = o.c, lt = shade(c, .3), dk = shade(c, -.35);
+  el('ellipse', g, { cx:0, cy:38, rx:100, ry:8, fill:'#000', opacity:.22, filter:'url(#soft4)' });
+  [[-46, -28, 1], [44, -30, -1]].forEach(([lx, ly, k]) => path(g, `M${lx} ${ly}Q${lx - 4*k} 4 ${lx + 2*k} 8L${lx + 6*k} 36`, { stroke:dk, 'stroke-width':8, fill:'none' }));
+  path(g, 'M-80 -56C-102 -50 -112 -28 -110 -2C-104 -18 -96 -34 -82 -44Z', { fill:shade(c, -.55), stroke:'none' });
+  const body = 'M-80 -60C-60 -80 20 -82 50 -70L78 -112C84 -122 100 -124 106 -112L112 -96L96 -92L84 -60C80 -40 66 -30 50 -28L-60 -26C-84 -28 -96 -44 -80 -60Z';
+  path(g, body, { fill:LG([[0, lt], [.6, c], [1, dk]]), stroke:'none' }); path(g, body, { fill:'url(#tx-grain)', stroke:'none' });
+  path(g, 'M50 -72C60 -96 70 -110 82 -118C76 -100 70 -84 62 -66Z', { fill:shade(c, -.55), stroke:'none' });
+  path(g, 'M-10 -76C0 -60 20 -58 30 -74', { stroke:'#a8332b', 'stroke-width':10, fill:'none' }); path(g, 'M-10 -76C0 -60 20 -58 30 -74', { stroke:'#e3b54a', 'stroke-width':2, fill:'none' });
+  [[-62, -28, -1], [30, -30, 1]].forEach(([lx, ly, k]) => path(g, `M${lx} ${ly}Q${lx + 4*k} 4 ${lx - 2*k} 8L${lx - 6*k} 36`, { stroke:c, 'stroke-width':9, fill:'none' }));
+  circ(g, 98, -108, 2.4, { fill:'#1a120a', stroke:'none' }); return g; }
+function bag(p, x, y, s=1, o){ const g = G(p, { x, y, s, o:(o||{}).o ?? 1 }); el('ellipse', g, { cx:0, cy:62, rx:70, ry:8, fill:'#000', opacity:.2, filter:'url(#soft4)' });
+  path(g, 'M-60 60Q-80 -10 -30 -50H30Q80 -10 60 60Z', { fill:LG([[0, '#c99556'], [1, '#7a4a22']], { x2:1, y2:.6 }), stroke:'#6b4a2e', 'stroke-width':3 }); path(g, 'M-60 60Q-80 -10 -30 -50H30Q80 -10 60 60Z', { fill:'url(#tx-sand)', stroke:'none' });
+  path(g, 'M-52 20Q0 34 54 20', { stroke:'#a8332b', 'stroke-width':6, fill:'none' }); path(g, 'M-34 -50Q0 -66 34 -50', { stroke:'#5a3412', 'stroke-width':6, fill:'none' }); return g; }
+BEATS = [
+lessonIntro({ ch:7, n:3, of:4, title:'Дорога в Медину', chapter:'Глава 7 · Хиджра — переселение из Мекки в Медину', parts:['Проводник и Обладательница двух поясов', 'Путь вдоль моря и полуденный привал', 'Сурака, шатры Умм Ма‘бад, встречи в пути'], min:17 }),
+
+readBeat('b1', 'Проводник', K, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:560, ridges:2, ground:'flat', moon:[PL.x + 110, PL.y + 90, 22, 'crescent'], seed:4 }); const q = pl.inner;
+  rockMass(q, `M${PL.x - 2} 860L${PL.x - 2} 600Q${CX} 470 ${PL.x + PL.w + 2} 600V860Z`, { c:['#4a4558', '#1e1c28'], rim:'#a9c0e8' });
+  const cv = caveMouth(q, CX, 572, .62, { night:true, glow:.18 });
+  const c1 = chip(q, CX, 170, 'Абдуллах ибн Урайкит аль-Ляйси', w('Они наняли'), { size:24, c:COL.gold, sub:'опытный проводник, ещё исповедовал религию курайшитов' });
+  const c2 = T(q, 'через три дня — к пещере Саур', { x:CX, y:250, size:22, italic:true, font:SERIF, fill:NIGHT, o:0 }); show(c2, w('через три дня'));
+  const dt = plateDate(q, 'ночь на 1 раби аль-авваль · 16 сентября 622 г.', w('Ночью первого числа'), { y:330 });
+  const cm = G(q, { o:0 }); camel(cm, CX - 190, 760, 1.1, { c:'#b08455' }); camel(cm, CX + 190, 765, 1.0, { c:'#9a6c3a' }); show(cm, w('привел к ним двух верблюдиц'));
+  const fp = quoteCard(q, CX, 450, 420, null, '«За деньги»', 'ответ Пророка ﷺ на подарок', w('сказал: «За деньги»', -.6), { size:34 });
+  pl.frame();
+}),
+
+readBeat('b2', 'Обладательница двух поясов', K, (p, D) => {
+  const pl = plate(p, { scene:'dawn', hz:620, ridges:2, ground:'flat', veil:.0, seed:23 }); const q = pl.inner; veil(q, .35, '#f7ecd3');
+  const b = bag(q, CX, 420, 1.6, { o:0 }); show(b, w('принесла им припасы'));
+  const bl = T(q, 'припасы на дорогу', { x:CX, y:560, size:22, italic:true, font:SERIF, fill:COL.dim, o:0 }); show(bl, w('принесла им припасы', .3));
+  const belt = G(q, { x:CX, y:660, o:0 }); const L = rect(belt, -260, -14, 260, 28, { rx:6, fill:COL.terra, stroke:'#6e3219', 'stroke-width':2 }); const R = rect(belt, 0, -14, 260, 28, { rx:6, fill:COL.terra, stroke:'#6e3219', 'stroke-width':2 });
+  show(belt, w('нет завязки'));
+  const Lg = G(q, { o:0 }); rect(Lg, CX - 130, 300, 260, 26, { rx:6, fill:COL.terra, stroke:'#6e3219', 'stroke-width':2 }); show(Lg, w('привязав все одним куском'));
+  tw(L, { o:0 }, w('привязав все одним куском'), .4);
+  const nm = tablet(q, CX, 780, 680, 90, { o:0 }); show(nm, w('Зат ан-нитакейн'));
+  T(nm, '«Зат ан-нитакайн»', { y:-8, size:32, weight:700, font:SERIF, fill:COL.emerald }); T(nm, 'Обладательница двух поясов — Асма бинт Абу Бакр (р.а.)', { y:26, size:19, fill:COL.dim });
+  const ly = G(q, { o:0 }); scene(ly, 'dawn', { hz:620, ridges:3, ground:'dunes', seed:29 }); veil(ly, .45, '#f7ecd3'); camel(ly, CX - 160, 800, 1, { c:'#b98a55', walk:true }); camel(ly, CX + 120, 806, .95, { c:'#a4743f', walk:true });
+  T(ly, 'В путь', { x:CX, y:200, size:40, weight:700, font:SERIF }); rule(ly, CX, 232, 300);
+  [['Пророк ﷺ', COL.gold], ['Абу Бакр (р.а.)', COL.emerald], ['‘Амир ибн Фухайра (р.а.)', COL.emerald], ['проводник Абдуллах ибн Урайкит', COL.brown]].forEach(([n, c], i) => { const cc = chip(ly, CX, 320 + i*90, n, 0, { size:26, c }); st(cc, { o:1 }); });
+  T(ly, 'путь — вдоль берега моря', { x:CX, y:720, size:24, italic:true, font:SERIF, fill:COL.dim });
+  show(ly, w('двинулись в путь'), .8);
+  pl.frame();
+}),
+
+readBeat('b3', 'Путь вдоль моря', K, (p, D) => {
+  const pl = plate(p); const M = hmap(pl.inner, { o:0 }); show(M.g, .1, .6);
+  const mk = M.place('mecca', { o:1, size:22, dx:14 }); M.place('thawr', { o:1, size:20, dx:14, dy:24, label:'Саур' });
+  const R1 = route(M, ROUTE.slice(0, 4), { stroke:COL.emerald, 'stroke-width':6 }); draw(R1, w('на юг по направлению'), 1.2);
+  const R2 = route(M, ROUTE.slice(3, 6), { stroke:COL.emerald, 'stroke-width':6 }); draw(R2, w('на запад'), 1.2);
+  const R3 = route(M, ROUTE.slice(5), { stroke:COL.emerald, 'stroke-width':6 }); draw(R3, w('он повернул на север'), 3);
+  [['1 · на юг', 'на юг по направлению', 39.95, 21.1], ['2 · на запад', 'на запад', 38.75, 21.15], ['3 · на север', 'он повернул на север', 38.35, 23.0]].forEach(([t, ph, lo, la]) => { const l = M.lab(t, lo, la, { size:23, weight:700, italic:false, fill:COL.emerald }); st(l, { o:0 }); show(l, w(ph, .4)); });
+  const PLC = [['usfan', 'ниже Усфана', 'Усфан', 14], [[39.22, 22.1, 'Амадж'], 'ниже Амаджа', null, -14], ['qudayd', 'мимо Кудайда', 'Кудайд', 14], ['arj', 'в аль-Ардж', 'аль-Ардж', 14], [[39.4, 24.0, 'Рукуба'], 'Рукубы', 'Рукуба', -14], ['quba', 'привел их в Куба', 'Куба', -14]];
+  PLC.forEach(([k, ph, lab, dx]) => { const d = M.place(k, { o:0, color:k === 'quba' ? COL.emerald : COL.gold, r:6, size:21, dx, anchor:dx < 0 ? 'end' : 'start', label:lab }); show(d, w(ph)); });
+  const md = M.place('medina', { o:0, size:22, dy:-16 }); show(md, w('привел их в Куба', .4));
+  const nt = M.lab('путь показан схематично — по перечню мест у Ибн Исхака', 40.4, 24.75, { size:17, fill:COL.dim }); st(nt, { o:0 }); show(nt, w('Ибн Исхак упоминает'));
+}),
+
+readBeat('b4', 'Полуденный привал', K, (p, D) => {
+  const pl = plate(p, { scene:'noon', hz:560, ridges:2, ground:'dunes', sun:[PL.x + 640, PL.y + 100], seed:33 }); const q = pl.inner;
+  const rock = G(q, { o:0 }); el('ellipse', rock, { cx:PL.x + 500, cy:690, rx:200, ry:34, fill:'#3a2412', opacity:.35, filter:'url(#soft8)' });
+  const X = PL.x; rockMass(rock, `M${X - 10} 705L${X + 10} 560L${X + 60} 470L${X + 120} 430L${X + 150} 360L${X + 215} 330L${X + 260} 290L${X + 320} 300L${X + 350} 350L${X + 400} 380L${X + 430} 450L${X + 470} 520L${X + 500} 600L${X + 520} 705Z`, { c:['#dcae78', '#7a5434'] });
+  path(rock, `M${X + 320} 300L${X + 350} 350L${X + 400} 380L${X + 430} 450L${X + 470} 520L${X + 500} 600L${X + 520} 705L${X + 380} 705L${X + 360} 520L${X + 300} 420Z`, { fill:'#3a2412', stroke:'none', opacity:.32 });
+  [[X + 60, 520, X + 300, 500], [X + 110, 600, X + 420, 590], [X + 160, 420, X + 330, 410]].forEach(([a, b, c, d]) => path(rock, `M${a} ${b}Q${(a + c)/2} ${b - 14} ${c} ${d}`, { stroke:'#5a3a1e', 'stroke-width':2, opacity:.45, fill:'none' }));
+  [[X + 40, 712, 22], [X + 540, 708, 14], [X + 470, 716, 10]].forEach(([sx, sy, r]) => stone(rock, sx, sy, r, '#b08a64')); show(rock, w('высокая скала'));
+  const sh = T(q, 'тень у скалы', { x:PL.x + 470, y:720, size:22, italic:true, font:SERIF, fill:COL.brown, o:0 }); show(sh, w('отбрасывавшая тень'));
+  const hide = el('rect', q, { x:PL.x + 440, y:600, width:180, height:44, rx:12, fill:LG([[0, '#e0b880'], [1, '#9a6a3a']]), stroke:'#6b4a2e', 'stroke-width':2 }, { o:0 }); show(hide, w('постелил для него шкуру'));
+  const hl = T(q, 'шкура для отдыха', { x:PL.x + 530, y:670, size:19, italic:true, fill:COL.dim, o:0 }); show(hl, w('постелил для него шкуру', .3));
+  const fl = G(q, { x:PL.x + 900, y:760, o:0 }); [[0, 0], [40, 14], [-36, 18], [10, 34], [56, -10]].forEach(([dx, dy]) => sheep(fl, dx, dy, 1)); show(fl, w('пастуха, гнавшего'));
+  tw(fl, { x:PL.x + 650, y:760 }, w('пастуха, гнавшего', .2), 3, 'out');
+  const bowl = G(q, { x:CX + 60, y:320, o:0 }); path(bowl, 'M-70 0Q0 70 70 0Z', { fill:LG([[0, '#c99556'], [1, '#6b4a2e']]), stroke:'#5a3a1e', 'stroke-width':3 }); el('ellipse', bowl, { cx:0, cy:0, rx:70, ry:14, fill:'#fbf7ee', stroke:'#e0d6c4', 'stroke-width':2 }); show(bowl, w('надоил молока в чашу'));
+  const bl = T(q, 'чаша молока, охлаждённого водой', { x:CX + 60, y:400, size:22, italic:true, font:SERIF, fill:COL.ink, o:0 }); show(bl, w('добавил в молоко воды'));
+  const go = plateCap(q, '«Не пора ли нам ехать?»', w('Не пора ли нам ехать'));
+  pl.frame();
+}),
+
+readBeat('b5', 'Сурака ибн Малик', K, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:510, ridges:3, ground:'flat', seed:37 }); const q = pl.inner;
+  const qt = quoteCard(q, CX, 300, 640, null, '«Он — тот, кто ведёт меня по пути»', 'ответ Абу Бакра (р.а.): он говорил о пути блага', w('кто ведет меня по пути'), { size:28 });
+  tw(qt, { o:0 }, w('их стал преследовать Сурака'), .4);
+  const rw = tablet(q, CX, 150, 600, 76, { o:0 }); T(rw, 'награда — как вира за убийство', { y:9, size:26, weight:700, font:SERIF, fill:COL.terra }); show(rw, w('выплатят за поимку'));
+  const sc = chip(q, CX, 250, 'Сурака ибн Малик', w('бану мудлидж'), { size:26, c:COL.terra, sub:'из племени бану мудлидж' });
+  const trk = path(q, `M${PL.x + 60} 600H${PL.x + PL.w - 60}`, { stroke:COL.emerald, 'stroke-width':4, 'stroke-dasharray':'2 12', o:0 }); show(trk, w('сел на нее и пустил ее галопом'));
+  const tl = T(q, 'путь Пророка ﷺ и Абу Бакра (р.а.)', { x:PL.x + PL.w - 70, y:520, size:19, italic:true, anchor:'end', fill:COL.emerald, o:0 }); show(tl, w('сел на нее и пустил ее галопом'));
+  const hs = horse(q, PL.x + 120, 590, 1.1, { o:0 }); show(hs, w('сел на нее и пустил ее галопом'));
+  tw(hs, { x:PL.x + 300 }, w('сел на нее и пустил ее галопом', .3), 2.5, 'io');
+  tw(hs, { r:-14, y:610 }, w('моя лошадь споткнулась'), .4, 'out'); tw(hs, { r:0, y:590 }, w('Тогда я встал'), .5);
+  const ar = G(q, { x:PL.x + 180, y:430, o:0 }); for(let i = 0; i < 3; i++) path(ar, `M${i*26} 60L${i*26} -40M${i*26 - 8} -26L${i*26} -40L${i*26 + 8} -26`, { stroke:COL.brown, 'stroke-width':4 }); T(ar, 'гадание на стрелах', { x:26, y:96, size:19, italic:true, fill:COL.dim });
+  show(ar, w('стал по ним гадать')); tw(ar, { o:0 }, w('Решив не обращать'), .4);
+  tw(hs, { x:PL.x + 380 }, w('Решив не обращать', .3), 2.5, 'io');
+  tw(hs, { y:660 }, w('до колен провалились'), .6, 'in');
+  const dust = G(q, { x:PL.x + 380, y:560, o:0 }); for(let i = 0; i < 7; i++) circ(dust, -40 + i*14, -i*28, 26 + i*6, { fill:'#c9b48a', stroke:'none', opacity:.55 }); show(dust, w('столб пыли'), .8); tw(dust, { y:470, o:0 }, w('столб пыли', 1.6), 2);
+  const gr = scroll(q, CX, 760, 520, 120, { o:0 }); show(gr, w('охранную грамоту'));
+  T(gr, 'охранная грамота', { y:-8, size:30, weight:700, font:SERIF }); T(gr, 'написал ‘Амир ибн Фухайра — на куске пергамента', { y:28, size:18, italic:true, fill:COL.dim });
+  const st1 = plateCap(q, '«Никому о нас не говори»', w('Никому о нас не говори'), { y:PL.y + 60 });
+  tw(rw, { o:0 }, w('Никому о нас не говори', -.3), .3);
+  pl.frame();
+}),
+
+readBeat('b6', 'Погоня, ставшая охраной', K, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:560, veil:.4, seed:41 }); const q = pl.inner;
+  const qc = quoteCard(q, CX, 300, 680, 'لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا', '«Не печалься, поистине, Аллах с нами!»', 'слова Пророка ﷺ; ср. сура «Покаяние», 9:40', w('Не печалься'), { size:30 });
+  const bar = G(q, { x:PL.x + 80, y:620, o:0 }); show(bar, w('первую половину дня'));
+  rect(bar, 0, -30, 320, 60, { rx:8, fill:COL.terra, stroke:'none' }); rect(bar, 320, -30, 320, 60, { rx:8, fill:COL.emerald, stroke:'none' });
+  T(bar, 'утром — преследовал', { x:160, y:9, size:24, weight:700, fill:'#fff' }); const t2 = T(bar, 'вечером — охранял', { x:480, y:9, size:24, weight:700, fill:'#fff', o:0 }); show(t2, w('а вторую половину'));
+  const s = T(q, '«Я всё разузнал для вас» — и Сурака уводил поиски', { x:CX, y:720, size:22, italic:true, font:SERIF, fill:COL.dim, o:0 }); show(s, w('Я все разузнал для вас'));
+  pl.frame();
+}),
+
+readBeat('b7', 'Шатры Умм Ма‘бад', K, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:470, ridges:2, ground:'flat', seed:43 }); const q = pl.inner; bush(q, PL.x + 720, 600, 1.3); bush(q, PL.x + 90, 640, 1); palm(q, PL.x + 740, 560, .6);
+  const tt = G(q, { o:0 }); tent(tt, PL.x + 230, 520, 1.6); tent(tt, PL.x + 560, 540, 1.2); show(tt, w('двух палаток'));
+  const tl = T(q, 'шатры Умм Ма‘бад аль-Хуза‘ийи', { x:CX, y:150, size:30, weight:700, font:SERIF, o:0 }); show(tl, w('двух палаток'));
+  const dr = T(q, 'засуха: «овцы не доятся»', { x:CX, y:200, size:23, italic:true, font:SERIF, fill:COL.terra, o:0 }); show(dr, w('год был засушливым'));
+  const sh = sheep(q, PL.x + 380, 620, 1.4); st(sh, { o:0 }); show(sh, w('увидел овцу'));
+  const shl = T(q, 'слабая овца в тени шатра', { x:PL.x + 380, y:690, size:20, italic:true, fill:COL.dim, o:0 }); show(shl, w('увидел овцу', .3));
+  const v = G(q, { x:PL.x + 620, y:690, o:0 }); rect(v, -60, -90, 120, 100, { rx:10, fill:LG([[0, '#c99556'], [1, '#6b4a2e']], { x2:1, y2:0 }), stroke:'#5a3a1e', 'stroke-width':3 });
+  const milk = G(v, { y:0, sy:0 }); rect(milk, -54, -84, 108, 88, { rx:8, fill:'#fbf7ee', stroke:'none' }); show(v, w('попросил принести большой сосуд'));
+  tw(milk, { sy:1 }, w('надоил в него столько молока'), 2, 'out');
+  const vl = T(q, 'края покрыла пена', { x:PL.x + 620, y:735, size:20, italic:true, fill:COL.dim, o:0 }); show(vl, w('края его покрыла пена'));
+  const lf = plateCap(q, 'и ещё один полный сосуд — оставлен хозяйке', w('снова надоил полный сосуд'), { y:PL.y + PL.h - 40 });
+  dr.setAttribute('class', '');
+  pl.frame();
+}),
+
+readBeat('b8', 'Голос над Меккой', K, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:600, ridges:2, ground:'flat', moon:[PL.x + 700, PL.y + 80, 26, 'crescent'], seed:9 }); const q = pl.inner;
+  const fl = G(q, { x:PL.x + 140, y:300 }); [[0, 0], [30, 10], [-26, 14]].forEach(([dx, dy]) => sheep(fl, dx, dy, .9)); st(fl, { o:0 }); show(fl, .2);
+  const ab = T(q, 'Абу Ма‘бад: «Опиши мне его…»', { x:PL.x + 450, y:300, size:22, italic:true, font:SERIF, fill:NIGHT, o:0 }); show(ab, w('Опиши мне его'));
+  const cit = cityscape(q, 740, { n:7, seed:12, night:true, lit:.5 }); cityscape(q, 800, { n:6, seed:15, night:true, lit:.4, scale:1.15 });
+  T(q, 'Мекка', { x:CX, y:830, size:22, weight:700, font:SERIF, fill:NIGHT });
+  for(let i = 0; i < 4; i++){ const a = path(q, `M${PL.x + 120 + i*36} ${560 - i*30}a${60 + i*40} ${60 + i*40} 0 0 1 ${60 + i*40} ${-60 - i*40}`, { stroke:COL.gold2, 'stroke-width':3, opacity:.8 }, { d:0 }); draw(a, w('громкий голос', i*.3), .6); }
+  const vc = plateCap(q, 'стихи слышны — но читающего не видно', w('не увидели того'), { y:PL.y + 70, dark:true });
+  const md = path(q, `M${PL.x + 160} 620C${PL.x + 360} 560 ${PL.x + 560} 520 ${PL.x + 720} 420`, { stroke:'#9fc3c9', 'stroke-width':4, 'stroke-dasharray':'4 10', 'marker-end':'url(#arr)' }, { d:0 }); draw(md, w('направляется в Медину'), 1.4);
+  const ml = T(q, 'к Медине', { x:PL.x + 700, y:400, size:24, weight:700, font:SERIF, fill:'#cfe2e6', o:0 }); show(ml, w('направляется в Медину', 1));
+  tw(ab, { o:0 }, w('громкий голос'), .3); tw(fl, { o:0 }, w('громкий голос'), .3);
+  pl.frame();
+}),
+
+readBeat('b9', 'Бурайда и аз-Зубайр', K, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:560, veil:.35, seed:47 }); const q = pl.inner;
+  const fl = G(q, { x:PL.x + 220, y:610, o:0 }); line(fl, 0, -280, 0, 220, { stroke:'#7a5a36', 'stroke-width':8 }); path(fl, 'M0 -280C40 -300 90 -260 140 -282V-180C90 -158 40 -198 0 -178Z', { fill:'#f7f1e2', stroke:'#b9ac90', 'stroke-width':2 }); show(fl, w('привязал ее к своему копью'));
+  const fll = T(q, 'чалма на копье — знамя', { x:PL.x + 220, y:820, size:22, italic:true, font:SERIF, fill:COL.dim, o:0 }); show(fll, w('сделав ее знаменем'));
+  const c1 = chip(q, PL.x + 200, 160, 'Бурайда', w('встретил Абу Бурайду'), { size:26, c:COL.emerald, sub:'вождь племени' });
+  const n70 = T(q, '+ 70', { x:PL.x + 220, y:270, size:54, weight:700, font:SERIF, fill:COL.emerald, o:0 }); show(n70, w('семьдесят его соплеменников'));
+  const n70l = T(q, 'приняли ислам', { x:PL.x + 220, y:304, size:20, fill:COL.dim, o:0 }); show(n70l, w('семьдесят его соплеменников', .3));
+  const c2 = chip(q, PL.x + 590, 160, 'аз-Зубайр (р.а.)', w('встретил также аз-Зубайра'), { size:26, c:COL.lapis, sub:'караван из Шама' });
+  const cl = G(q, { x:PL.x + 590, y:470, o:0 }); rect(cl, -120, -80, 200, 150, { rx:8, fill:'#fbf8f0', stroke:'#cfc6b4', 'stroke-width':2 }); rect(cl, -80, -50, 200, 150, { rx:8, fill:'#fffdf7', stroke:'#cfc6b4', 'stroke-width':2 }); show(cl, w('белые одежды'));
+  const cll = T(q, 'белые одежды — подарок', { x:PL.x + 590, y:640, size:22, italic:true, font:SERIF, fill:COL.dim, o:0 }); show(cll, w('белые одежды', .3));
+  pl.frame();
+}),
+
+lessonWrap(['Проводник повёл путников редкой дорогой вдоль моря', 'Сурака: утром — преследователь, вечером — охранник', 'У Умм Ма‘бад слабая овца дала молоко', 'Бурайда и 70 человек приняли ислам; аз-Зубайр подарил белые одежды']),
+lessonQuiz([
+  { id:'p-belts', prompt:'Почему Асму бинт Абу Бакр (р.а.) прозвали «Обладательницей двух поясов»?', build: choice(['Она носила два пояса', 'Разорвала пояс надвое: одной частью привязала припасы, другой подпоясалась', 'Ей подарили два пояса'], 1, 'Да — «Зат ан-нитакайн».', ['Нет.', '', 'Нет.']) },
+  { id:'p-way', prompt:'Как проводник повёл путников из пещеры?', build: choice(['Прямо на север, к Медине', 'Сначала на юг, затем на запад, к побережью, и потом на север редкой дорогой вдоль моря', 'Через Таиф'], 1, 'Верно — обходной путь вдоль Красного моря.', ['Нет, это была бы ожидаемая дорога.', '', 'Нет.']) },
+  { id:'p-guide2', prompt:'Что отвечал Абу Бакр (р.а.) на вопрос «Кто этот человек перед тобой?»', build: choice(['«Мой брат»', '«Тот, кто ведёт меня по пути»', '«Купец из Мекки»'], 1, 'Да: люди думали о дороге, а он говорил о пути блага.', ['Нет.', '', 'Нет.']) },
+  { id:'p-suraqa', prompt:'Чем закончилась погоня Сураки ибн Малика?', build: choice(['Он вернулся за подмогой', 'Его конь дважды увяз; он попросил охранную грамоту и уводил поиски в сторону', 'Он присоединился к путникам до Медины'], 1, 'Верно: утром он преследовал, а вечером — охранял.', ['Нет.', '', 'Нет, он вернулся назад.']) },
+  { id:'p-meet', prompt:'Что подарил путникам аз-Зубайр (р.а.)?', build: choice(['Верблюдов', 'Белые одежды', 'Оружие'], 1, 'Да, он возвращался с торговым караваном из Шама.', ['Нет.', '', 'Нет.']) }
+]),
+finishBeat()
+];
+boot();
+</script></body></html>

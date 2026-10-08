@@ -1,0 +1,168 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Урок 7.2</title>
+<link rel="stylesheet" href="../lib/engine.css"></head><body>
+<script src="../lib/engine.js"></script><script src="../lib/art.js"></script><script src="../lib/reader.js"></script><script src="../lib/scene.js"></script><script src="narration.js"></script>
+<script>
+CHAPTER = { num:'07-2', badge:'7.2', lesson:true, title:'Ночь ухода и пещера Саур', next:'../07-3/index.html' };
+const K1 = 'Переселение Пророка ﷺ', K2 = 'Окружение дома', K3 = 'Пророк ﷺ покидает свой дом', K4 = 'Из дома в пещеру', K5 = 'Пребывание в пещере';
+const CX = PL.x + PL.w/2, NIGHT = '#f3e3b8';
+function sky(q, seed){ const g = G(q); const id = 'sk' + seed; const lg = el('linearGradient', DEFS, { id, x1:0, y1:0, x2:0, y2:1 }); el('stop', lg, { offset:'0', 'stop-color':'#0b1a2c' }); el('stop', lg, { offset:'1', 'stop-color':'#2e4463' });
+  rect(g, PL.x, PL.y, PL.w, PL.h, { rx:0, fill:`url(#${id})`, stroke:'none' }); let sd = seed; const rnd = () => (sd = (sd*9301 + 49297) % 233280)/233280;
+  for(let i = 0; i < 70; i++) circ(g, PL.x + rnd()*PL.w, PL.y + rnd()*PL.h*.6, .8 + rnd()*2, { fill:'#fff6dc', stroke:'none', opacity:.4 + rnd()*.6 }); return g; }
+function cityline(q, y, c){ const g = G(q); [[80, 70, 90], [180, 110, 70], [290, 90, 100], [400, 120, 80], [510, 80, 110], [620, 100, 75], [720, 120, 95]].forEach(([x, w0, h]) => rect(g, PL.x + x - w0/2, y - h, w0, h + 200, { rx:2, fill:c, stroke:'none' })); return g; }
+function cave(q, x, y, s=1){ const g = G(q, { x, y, s }); path(g, 'M-60 30Q-50 -40 0 -46Q50 -40 60 30Z', { fill:'#141218', stroke:'#5a5466', 'stroke-width':3 }); circ(g, 0, 0, 30, { fill:'#ffd98a', stroke:'none', opacity:.15, filter:'url(#glow)' }); return g; }
+BEATS = [
+lessonIntro({ ch:7, n:2, of:4, title:'Ночь ухода и пещера Саур', chapter:'Глава 7 · Хиджра — переселение из Мекки в Медину', parts:['Позволение покинуть Мекку', 'Засада у дома и выход сквозь неё', 'Три дня в пещере Саур'], min:15 }),
+
+readBeat('b1', 'Позволение покинуть Мекку', K1, (p, D) => {
+  const pl = plate(p, { scene:'noon', hz:520, ground:'flat', sun:[CX, PL.y + 110], seed:14 }); const q = pl.inner;
+  cityscape(q, 640, { n:8, seed:5, scale:.8 }); cityscape(q, 690, { n:6, seed:9, scale:.95 });
+  const h1 = house(q, PL.x + 200, 760, 150, 110, { c:'#e8c894' }), h2 = house(q, PL.x + 600, 760, 150, 110, { c:'#e8c894' }); bush(q, PL.x + 90, 770, 1.2); palm(q, PL.x + 720, 770, .7);
+  T(q, 'дом Пророка ﷺ', { x:PL.x + 200, y:800, size:22, weight:700, font:SERIF }); T(q, 'дом Абу Бакра (р.а.)', { x:PL.x + 600, y:800, size:22, weight:700, font:SERIF });
+  const pth = path(q, `M${PL.x + 270} 740C${PL.x + 380} 690 ${PL.x + 440} 690 ${PL.x + 530} 740`, { stroke:COL.emerald, 'stroke-width':5, 'stroke-dasharray':'3 12', 'marker-end':'url(#arr)' }, { d:0 }); draw(pth, w('пошел к Абу Бакру'), 1.4);
+  const rv = quoteCard(q, CX, 380, 660, null, '«Не проводи ночь в той постели,\nгде ты обычно спал»', 'весть о заговоре и позволение покинуть Мекку', w('И он указал ему'));
+  tw(rv, { o:0 }, w('Однажды в самый разгар'), .5);
+  const q2 = quoteCard(q, CX, 380, 660, null, '«Я получил разрешение покинуть Мекку»', null, w('Я получил разрешение'));
+  const yes = T(q, '«Да» — Абу Бакр (р.а.) будет спутником', { x:CX, y:500, size:26, weight:700, font:SERIF, fill:COL.emerald, o:0 }); show(yes, w('сказал: «Да».', -.4));
+  pl.frame();
+}),
+
+readBeat('b2', 'Окружение дома', K2, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:300, ridges:2, ground:'flat', moon:[PL.x + 680, PL.y + 90, 30, 'crescent'], seed:5 }); const q = pl.inner;
+  const h = G(q, { x:CX, y:300, o:0 }); show(h, .2, .6);
+  house(h, -10, 90, 220, 150, { night:true, lit:true });
+  T(h, 'дом Пророка ﷺ', { y:-110, size:22, weight:700, fill:NIGHT, font:SERIF });
+  for(let i = 0; i < 11; i++){ const a = i/11*Math.PI*2 - Math.PI/2, d = G(h, { x:Math.cos(a)*200, y:Math.sin(a)*165 + 10, o:0 }); path(d, 'M0 -9L9 0L0 9L-9 0Z', { fill:COL.terra, stroke:'#f3c9a8', 'stroke-width':1.5 }); show(d, w('одиннадцать представителей', i*.12)); }
+  const NM = ['Абу Джахль', 'аль-Хакам', '‘Укба', 'ан-Надр', 'Умаййа', 'Зам‘а', 'Ту‘айма', 'Абу Ляхаб', 'Убайй', 'Набих', 'Мунбих'];
+  const PH = ['1. Абу Джахль', '2. Аль-Хакам', '3. Укба', '4. Ан-Надр', '5. Умаййа', '6. Замa', '7. Туайма', '8. Абу Ляхаб', '9. Убайй', '10. Набих', '11. Его брат'];
+  NM.forEach((n, i) => { const col = i < 6 ? 0 : 1, row = i < 6 ? i : i - 6; const t = T(q, `${i + 1}. ${n}`, { x:PL.x + 150 + col*330, y:560 + row*40, size:23, anchor:'start', fill:'#e9cfae', font:SERIF, o:0 });
+    show(t, NAR.plain.includes(PH[i]) ? w(PH[i]) : w('одиннадцать представителей', 1 + i*.3)); });
+  const ly = G(q, { o:0 }); rect(ly, PL.x, PL.y + 470, PL.w, PL.h - 470, { rx:0, fill:LG([[0, '#0b1528', .7], [.15, '#0b1528', .9]]), stroke:'none' });
+  quoteCard(ly, CX, 690, 720, 'وَيَمْكُرُونَ وَيَمْكُرُ اللَّهُ وَاللَّهُ خَيْرُ الْمَاكِرِينَ', '«…они хитрят, и Аллах хитрит,\nа Аллах — лучший из хитрецов»', 'сура «Добыча», 8:30', 0, { size:24 }).childNodes.forEach(() => {});
+  [...ly.querySelectorAll('g')].forEach(g => { if(g._s && g._s.o === 0) st(g, { o:1 }); });
+  show(ly, w('Вспомни'), .8);
+  const ab = plateCap(q, '«после полуночи» — ждали, когда он заснёт', w('после полуночи'), { y:PL.y + 50, dark:true });
+  tw(ab, { o:0 }, w('Вспомни'), .4);
+  pl.frame();
+}),
+
+readBeat('b3', 'Выход сквозь засаду', K3, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:200, ridges:2, ground:'flat', seed:9 }); const q = pl.inner;
+  const h = G(q, { x:CX - 150, y:260 }); house(h, -10, 100, 250, 200, { night:true, lit:true, door:false });
+  T(h, 'дом Пророка ﷺ', { y:-150, size:22, weight:700, fill:NIGHT, font:SERIF });
+  const ring = el('ellipse', h, { cx:0, cy:10, rx:210, ry:170, fill:'none', stroke:COL.terra, 'stroke-width':4, 'stroke-dasharray':'3 14', 'stroke-linecap':'round' });
+  const bed = G(h, { x:-30, y:-10, o:0 }); rect(bed, -70, -34, 140, 68, { rx:8, fill:'#3f6b3a', stroke:'#cdbf9e', 'stroke-width':2 }); T(bed, 'зелёный плащ', { y:8, size:19, fill:'#e9e2c8' }); show(bed, w('Ложись на мою постель'));
+  const al = T(h, '‘Али (р.а.) на постели', { x:-30, y:52, size:19, italic:true, fill:'#cdbf9e', o:0 }); show(al, w('Ложись на мою постель', .5));
+  const ab = G(q, { x:CX + 230, y:560, o:0 }); house(ab, -10, 60, 170, 120, { night:true, lit:true }); T(ab, 'дом Абу Бакра (р.а.)', { y:90, size:21, weight:700, fill:NIGHT, font:SERIF });
+  show(ab, w('прошел к дому Абу Бакра'));
+  const out = path(q, `M${CX - 150} 372C${CX - 120} 480 ${CX} 560 ${CX + 130} 560`, { stroke:COL.gold2, 'stroke-width':5, 'stroke-dasharray':'2 12', 'marker-end':'url(#arr)' }, { d:0 }); draw(out, w('прошел к дому Абу Бакра', -.6), 1.5);
+  const dn = path(q, `M${CX + 330} 560C${CX + 360} 640 ${CX + 300} 720 ${CX + 200} 790`, { stroke:'#9fc3c9', 'stroke-width':5, 'stroke-dasharray':'2 12', 'marker-end':'url(#arr)' }, { d:0 }); draw(dn, w('маленькую дверцу'), 1.4);
+  const dl = T(q, 'к горе Саур — на юг', { x:CX + 120, y:820, size:22, italic:true, font:SERIF, fill:'#cfe2e6', o:0 }); show(dl, w('пещеры на горе Саур'));
+  const ay = quoteCard(q, CX, 560, 720, 'وَجَعَلْنَا مِن بَيْنِ أَيْدِيهِمْ سَدًّا وَمِنْ خَلْفِهِمْ سَدًّا فَأَغْشَيْنَاهُمْ فَهُمْ لَا يُبْصِرُونَ', '«…и Мы воздвигли пред ними преграду и позади них преграду\nи набросили покров на глаза их, так что они не видят»', 'сура «Йа Син», 36:9', w('читал в это время'), { size:21 });
+  tw(ay, { o:0 }, w('прошел к дому Абу Бакра', -.8), .5);
+  pl.frame();
+}),
+
+readBeat('b4', 'Утро у дверей', K3, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:760, ridges:0, ground:'flat', clouds:1, seed:13 }); const q = pl.inner;
+  const dawn = G(q, { o:0 }); rect(dawn, PL.x, PL.y, PL.w, PL.h, { rx:0, fill:LG(SKY.dawn), stroke:'none' }); tw(dawn, { o:.9 }, w('а утром Али поднялся'), 2.5);
+  const wall = rect(q, PL.x, PL.y + 150, PL.w, 660, { rx:0, fill:LG([[0, '#5a4e5e'], [1, '#2e2834']]), stroke:'none' }); rect(q, PL.x, PL.y + 150, PL.w, 660, { rx:0, fill:'url(#tx-paper)', stroke:'none' });
+  const dr = G(q, { x:CX, y:470 }); rect(dr, -190, -280, 380, 430, { rx:4, fill:'#3a2a1a', stroke:'none' }); rect(dr, -170, -260, 340, 400, { rx:4, fill:LG([[0, '#7a5434'], [1, '#4a301a']]), stroke:'#2f2010', 'stroke-width':4 });
+  for(let i = -1; i <= 1; i += 2){ rect(dr, i*80 - 60, -230, 120, 340, { rx:4, fill:LG([[0, '#8a6038'], [1, '#5a3a20']], { x2:1, y2:0 }), stroke:'#2f2010', 'stroke-width':2 }); for(let k = 0; k < 4; k++) circ(dr, i*80 - 40 + k*14, -200, 4, { fill:'#c9a34a', stroke:'none' }); }
+  rect(dr, -170, -260, 340, 400, { rx:4, fill:'url(#tx-sand)', stroke:'none', opacity:.8 });
+  const slit = rect(dr, -4, -230, 8, 340, { rx:2, fill:'#f7e2a6', stroke:'none', o:0 }); show(slit, w('через щель в двери'));
+  const sl = T(q, 'взгляд через щель: «это же спит Мухаммад…»', { x:CX, y:770, size:23, italic:true, font:SERIF, fill:NIGHT, o:0 }); show(sl, w('через щель в двери', .3));
+  const sand = G(q, { o:0 }); for(let i = 0; i < 40; i++) circ(sand, PL.x + 60 + (i*53)%680, 150 + (i*37)%160, 2.5, { fill:'#d8c08a', stroke:'none' }); show(sand, w('обсыпал вам головы песком')); tw(sand, { y:60, o:0 }, w('стряхивать песок'), 1.5);
+  const c1 = plateCap(q, '«Вы потерпели неудачу: он прошёл мимо вас»', w('Вы потерпели неудачу'), { y:PL.y + 60, dark:true }); tw(c1, { o:0 }, w('Однако они посмотрели'), .4);
+  const t2 = tablet(q, CX, 160, 560, 80, { o:0 }); T(t2, '‘Али (р.а.): «Я ничего о нём не знаю»', { y:9, size:25, weight:700, font:SERIF, fill:COL.emerald }); show(t2, w('Я ничего о нем не знаю'));
+  tw(sl, { o:0 }, w('а утром Али поднялся'), .4);
+  pl.frame();
+}),
+
+readBeat('b5', 'Из дома в пещеру', K4, (p, D) => {
+  const pl = plate(p); const M = hmap(pl.inner, { o:0, lon0:38.6, lon1:40.9, lat0:20.9, lat1:23.0 }); show(M.g, .1, .6);
+  plateDate(pl.inner, 'ночь на 27 сафара · 12/13 сентября 622 г.', w('ночью двадцать седьмого'));
+  const mk = M.place('mecca', { o:0, size:24, dx:14 }); show(mk, .3);
+  const north = route(M, [[39.83, 21.5], [39.6, 22.1], [39.4, 22.9]], { stroke:'#8c8577', 'stroke-width':5, 'stroke-dasharray':'10 10', 'marker-end':'url(#arr)' }); draw(north, w('по дороге, ведущей в Медину'), 1.4);
+  const ex = M.lab('ожидаемый путь — на север', 39.75, 22.55, { size:22, weight:700, italic:true, fill:COL.dim, anchor:'start' }); st(ex, { o:0 }); show(ex, w('по дороге, ведущей в Медину', .5));
+  const [nx, ny] = M.P(39.55, 22.3); const cr = G(M.g, { x:nx, y:ny, o:0 }); path(cr, 'M-24 -24L24 24M24 -24L-24 24', { stroke:COL.terra, 'stroke-width':8 }); pop(cr, w('он выбрал совсем другой путь'));
+  const go = route(M, [[39.83, 21.42], [39.84, 21.39], [39.85, 21.37]], { stroke:COL.emerald, 'stroke-width':7 }); draw(go, w('направился к югу'), 1);
+  const th = M.place('thawr', { o:0, size:24, dy:36, color:COL.emerald, label:'гора Саур · ≈ 5 миль' }); show(th, w('около пяти миль'));
+  const mt = plateCap(pl.inner, 'высокая, труднодоступная, покрытая камнями', w('высокой и труднодоступной'), { y:PL.y + PL.h - 50 });
+  pl.frame();
+}),
+
+readBeat('b6', 'В пещере', K5, (p, D) => {
+  const pl = plate(p, { night:true }); const q = pl.inner;
+  rockMass(q, `M${PL.x - 2} ${PL.y - 2}H${PL.x + PL.w + 2}V${PL.y + PL.h + 2}H${PL.x - 2}Z`, { c:['#6a5a52', '#2e2622'], rim:null, tex:.7 });
+  const cv = path(q, `M${PL.x + 90} 650Q${PL.x + 80} 300 ${CX} 260Q${PL.x + PL.w - 80} 300 ${PL.x + PL.w - 90} 650Z`, { fill:RG([[0, '#3a2e26'], [.7, '#1a1410'], [1, '#0e0a08']], { cy:.75, r:.75 }), stroke:'#8a7a6a', 'stroke-width':3 });
+  path(q, `M${PL.x + 90} 650Q${PL.x + 80} 300 ${CX} 260Q${PL.x + PL.w - 80} 300 ${PL.x + PL.w - 90} 650Z`, { fill:'url(#tx-rock)', stroke:'none', opacity:.6 });
+  circ(q, CX, 420, 200, { fill:'#ffc870', stroke:'none', opacity:.12, filter:'url(#soft30)' });
+  const T0 = T(q, 'пещера Саур — внутри', { x:CX, y:140, size:30, weight:700, font:SERIF, fill:NIGHT }); 
+  const holes = [[CX - 230, 520], [CX + 60, 610], [CX + 240, 470]].map(([x, y]) => { const g = G(q, { x, y }); el('ellipse', g, { cx:0, cy:0, rx:26, ry:16, fill:'#000', stroke:'#8a8094', 'stroke-width':2 }); return g; });
+  const sw = G(q, { x:CX - 230, y:520, o:0 }); el('ellipse', sw, { cx:0, cy:0, rx:30, ry:19, fill:'#d8c9a6', stroke:'#8d7446', 'stroke-width':2 }); show(sw, w('оторвал кусок'));
+  const swl = T(q, 'кусок изара', { x:CX - 230, y:575, size:20, italic:true, fill:'#e3d6b8', o:0 }); show(swl, w('оторвал кусок', .3));
+  [[CX + 60, 610], [CX + 240, 470]].forEach(([x, y], i) => { const g = G(q, { x, y, o:0 }); el('ellipse', g, { cx:0, cy:0, rx:30, ry:19, fill:'#7a5a3a', stroke:'#c9a970', 'stroke-width':2 }); show(g, w('две другие дыры', i*.4)); });
+  const cl = T(q, 'отверстия закрыты', { x:CX + 150, y:690, size:20, italic:true, fill:'#e3d6b8', o:0 }); show(cl, w('две другие дыры', .8));
+  const sw2 = plateCap(q, 'Абу Бакр (р.а.) входит первым и очищает пещеру', w('ты не войдешь туда'), { y:PL.y + 140 + 60, dark:true }); tw(sw2, { o:0 }, w('ядовитое насекомое', -.5), .4);
+  const st2 = plateCap(q, 'укус — и ни движения, чтобы не разбудить Пророка ﷺ', w('ядовитое насекомое'), { y:PL.y + PL.h - 60, dark:true });
+  pl.frame();
+}),
+
+readBeat('b7', 'Три дня', K5, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:600, ridges:2, ground:'flat', seed:11 }); const q = pl.inner;
+  rockMass(q, `M${PL.x - 2} 860L${PL.x - 2} 620L${PL.x + 220} 480L${PL.x + 430} 330L${PL.x + 560} 300L${PL.x + 802} 520V860Z`, { c:['#4a4558', '#1e1c28'], rim:'#a9c0e8' });
+  caveMouth(q, PL.x + 520, 345, .5, { night:true }); T(q, 'пещера Саур', { x:PL.x + 520, y:270, size:24, weight:700, font:SERIF, fill:NIGHT });
+  ['пт', 'сб', 'вс'].forEach((d, i) => { const g = G(q, { x:PL.x + 110 + i*100, y:130, o:0 }); moon(g, 0, 0, 22, 'crescent'); T(g, d, { y:56, size:22, weight:700, fill:NIGHT }); show(g, w('в пятницу, субботу и воскресение', i*.5)); });
+  const ab = path(q, `M${PL.x + 500} 370C${PL.x + 380} 480 ${PL.x + 220} 570 ${PL.x + 40} 640`, { stroke:'#9fc3c9', 'stroke-width':4, 'stroke-dasharray':'2 10' }, { d:0 }); draw(ab, w('Абдуллах бин Абу Бакр'), 1.6);
+  const abl = T(q, '← в Мекку: вести от Абдуллаха', { x:PL.x + 230, y:680, size:21, fill:'#cfe2e6', italic:true, o:0 }); show(abl, w('Он покидал их еще до рассвета'));
+  const prints = []; for(let i = 0; i < 10; i++){ const t = i/9, x = PL.x + 60 + t*420, y = 630 - t*260 + Math.sin(i)*6; prints.push(el('ellipse', q, { cx:x + (i%2 ? 7 : -7), cy:y, rx:6, ry:3.5, fill:'#d8c9a6', opacity:0 })); }
+  prints.forEach((f, i) => tw(f, { a_opacity:.85 }, w('Он покидал их еще до рассвета', 1 + i*.1), .2));
+  const flock = G(q, { x:PL.x + 60, y:650, o:0 }); [[0, 0], [40, 14], [-36, 18], [10, 34], [56, -10]].forEach(([dx, dy]) => sheep(flock, dx, dy, .85)); show(flock, w('Амира бин Фухайры'));
+  tw(flock, { x:PL.x + 480, y:380 }, w('Амира бин Фухайры', .4), 3, 'io');
+  const milk = plateCap(q, 'свежее молоко каждый вечер', w('свежее, и горячее молоко'), { y:PL.y + PL.h - 50, dark:true });
+  prints.forEach((f, i) => tw(f, { a_opacity:0 }, w('чтобы уничтожить его следы', i*.12), .3));
+  tw(flock, { x:PL.x + 60, y:650 }, w('прогонял за ним овец'), 3, 'io');
+  tw(milk, { o:0 }, w('чтобы уничтожить его следы', -.4), .4); const er = plateCap(q, 'стадо ‘Амира затаптывает следы', w('чтобы уничтожить его следы'), { y:PL.y + PL.h - 50, dark:true });
+  pl.frame();
+}),
+
+readBeat('b8', 'Ярость курайшитов', K5, (p, D) => {
+  const pl = plate(p, { scene:'day', hz:300, ridges:2, ground:'flat', veil:.2, seed:19 }); const q = pl.inner;
+  const kb = kaaba(q, PL.x + 200, 360, .9, { o:0 }); show(kb, w('притащили его к Каабе'));
+  const kl = T(q, '‘Али (р.а.) — допрос у Каабы', { x:PL.x + 200, y:410, size:21, italic:true, font:SERIF, fill:COL.dim, o:0 }); show(kl, w('притащили его к Каабе', .3));
+  const dr = G(q, { x:PL.x + 590, y:300, o:0 }); house(dr, 0, 100, 230, 250, { door:false, win:false, c:'#e0bf8a' }); rect(dr, -60, -100, 120, 200, { rx:3, fill:LG([[0, '#8a6038'], [1, '#5a3a20']], { x2:1, y2:0 }), stroke:'#2f2010', 'stroke-width':3 }); circ(dr, 50, -10, 7, { fill:COL.gold2, stroke:'none' }); show(dr, w('стали стучать в двери'));
+  const dl = T(q, 'дом Абу Бакра (р.а.)', { x:PL.x + 590, y:135, size:21, weight:700, font:SERIF, o:0 }); show(dl, w('стали стучать в двери'));
+  const er = G(q, { x:PL.x + 590, y:400, o:0 }); circ(er, 0, 0, 14, { fill:'none', stroke:COL.gold, 'stroke-width':5 }); circ(er, 0, 18, 6, { fill:COL.gold2, stroke:'none' }); show(er, w('слетела серьга')); tw(er, { y:450 }, w('слетела серьга'), .6, 'out');
+  const el1 = T(q, 'Асма (р.а.): «Я не знаю, где мой отец»', { x:PL.x + 590, y:500, size:20, italic:true, font:SERIF, fill:COL.terra, o:0 }); show(el1, w('я не знаю, где мой отец'));
+  const rw = tablet(q, CX, 620, 640, 100, { o:0 }); show(rw, w('сто верблюдов'));
+  T(rw, 'награда — 100 верблюдов', { y:-4, size:34, weight:700, font:SERIF, fill:COL.terra }); T(rw, 'за каждого, живого или мёртвого', { y:30, size:20, fill:COL.dim });
+  const srch = G(q, { o:0 }); for(let i = 0; i < 14; i++){ const a = i/14*Math.PI*2; path(srch, `M${CX} 760L${CX + Math.cos(a)*380} ${760 + Math.sin(a)*70}`, { stroke:COL.terra, 'stroke-width':2, 'stroke-dasharray':'3 9', opacity:.7 }); }
+  show(srch, w('рассыпались')); const sl = plateCap(q, 'горы, долины, низины — конные, пешие, следопыты', w('рассыпались', .4), { y:PL.y + PL.h - 40 });
+  pl.frame();
+}),
+
+readBeat('b9', 'У входа в пещеру', K5, (p, D) => {
+  const pl = plate(p, { scene:'night', hz:520, ridges:2, ground:'flat', seed:17 }); const q = pl.inner;
+  rockMass(q, `M${PL.x - 2} 860L${PL.x - 2} 560Q${CX} 380 ${PL.x + PL.w + 2} 560V860Z`, { c:['#4a4558', '#1e1c28'], rim:'#a9c0e8' });
+  const cm = caveMouth(q, CX, 540, 1.3, { night:true, glow:.15 });
+  const prints = []; for(let i = 0; i < 9; i++){ const x = PL.x + 80 + i*36, y = 800 - i*22; prints.push(el('ellipse', q, { cx:x, cy:y + (i%2 ? 8 : -8), rx:9, ry:5, fill:'#c9b78f', opacity:0 })); }
+  prints.forEach((f, i) => tw(f, { a_opacity:.9 }, w('Преследователи добрались', i*.25), .2));
+  const gap = T(q, 'всего несколько шагов', { x:CX - 90, y:640, size:22, italic:true, font:SERIF, fill:'#e9a987', o:0 }); show(gap, w('всего несколько шагов'));
+  const back = path(q, `M${PL.x + 390} 600C${PL.x + 300} 680 ${PL.x + 200} 720 ${PL.x + 80} 760`, { stroke:'#e9a987', 'stroke-width':4, 'stroke-dasharray':'4 10', 'marker-end':'url(#arr)' }, { d:0 }); draw(back, w('повернули назад'), 1.4);
+  const qc = quoteCard(q, CX, 220, 700, null, '«Молчи, о Абу Бакр:\nнас двое, а третий с нами — Аллах!»', 'хадис аль-Бухари', w('Молчи, о Абу Бакр'), { size:27 });
+  const c0 = plateCap(q, '«Если кто-нибудь посмотрит под ноги — увидит нас!»', w('если кто-нибудь из них посмотрит'), { y:PL.y + 60, dark:true }); tw(c0, { o:0 }, w('Молчи, о Абу Бакр', -.3), .3);
+  pl.frame();
+}),
+
+lessonWrap(['Джибрил сообщил о заговоре и о позволении уйти', '‘Али (р.а.) на постели — Пророк ﷺ выходит сквозь засаду', 'Путь — на юг, к горе Саур, а не на север', 'Три дня в пещере: «Аллах с нами»']),
+lessonQuiz([
+  { id:'p-noon', prompt:'Когда Пророк ﷺ пришёл к Абу Бакру (р.а.) договориться о переселении?', build: choice(['Ночью, тайно', 'В полуденный зной, когда обычно не приходил', 'После утренней молитвы у Каабы'], 1, 'Верно: «В такое время он ещё никогда не приходил к нам!»', ['Нет, это был день.', '', 'Нет.']) },
+  { id:'p-ali', prompt:'Что сделал ‘Али (р.а.) в ту ночь?', build: choice(['Отвлекал засаду у дверей', 'Лёг на постель Пророка ﷺ, укрывшись его зелёным хадрамаутским плащом', 'Вёл верблюдиц к пещере'], 1, 'Верно. Утром он поднялся с постели — и заговорщики растерялись.', ['Нет.', '', 'Нет, верблюдиц привёл проводник позже.']) },
+  { id:'p-ayah', prompt:'Какой аят читал Пророк ﷺ, проходя сквозь ряды засады?', build: choice(['«Мы воздвигли пред ними преграду… так что они не видят» (Йа Син, 9)', '«Не печалься, Аллах с нами» (Покаяние, 40)', '«Читай во имя Господа твоего» (Сгусток, 1)'], 0, 'Да, суру «Йа Син», 9-й аят.', ['', 'Эти слова прозвучат позже, в пещере.', 'Это первое откровение.']) },
+  { id:'p-south', prompt:'Почему путь лежал на юг, к горе Саур?', build: choice(['Там жили родственники Абу Бакра', 'Курайшиты ждали погоню на северной дороге — к Медине', 'Так было короче'], 1, 'Верно: он выбрал путь, которого от него не ждали.', ['Нет.', '', 'Нет, это был обход.']) },
+  { id:'p-amir', prompt:'Как ‘Амир ибн Фухайра помогал скрывающимся?', build: choice(['Приводил к пещере овец с молоком и затаптывал стадом следы', 'Писал письма в Медину', 'Охранял вход с оружием'], 0, 'Да, а Абдуллах ибн Абу Бакр приносил по вечерам вести из Мекки.', ['', 'Нет.', 'Нет.']) }
+]),
+finishBeat()
+];
+boot();
+</script></body></html>
